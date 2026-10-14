@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarea: Desafíos de Grafos – 4° ACPI</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=JetBrains+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e27;--card:rgba(255,255,255,.05);--line:rgba(0,217,255,.25);--cy:#00d9ff;--gr:#00ff88;--am:#ffc857;--rd:#ff6b81;--tx:#e6ecff;--mut:#8f9bc4}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 20% 0,#12183d,var(--bg) 60%);color:var(--tx);font-family:'IBM Plex Sans',sans-serif;line-height:1.6}
+#bar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--cy),var(--gr));z-index:9}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+h1,h2{font-family:'Orbitron',sans-serif;letter-spacing:.5px}
+h1{font-size:clamp(1.5rem,5vw,2.3rem);color:var(--cy);margin:.2em 0}
+h2{font-size:clamp(1.1rem,3.6vw,1.45rem);color:var(--cy);margin:0 0 .5em}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--gr);border:1px solid var(--gr);border-radius:20px;padding:2px 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin:20px 0;backdrop-filter:blur(8px)}
+.ex{border-left:4px solid var(--cy)}
+.meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--am)}
+.box{border-radius:10px;padding:12px 14px;margin:12px 0;font-size:.95rem}
+.idea{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.35)}
+.warn{background:rgba(255,200,87,.08);border:1px solid rgba(255,200,87,.4)}
+.box b.t{display:block;font-family:'JetBrains Mono',monospace;font-size:.8rem;margin-bottom:2px}
+.idea b.t{color:var(--gr)}.warn b.t{color:var(--am)}
+code{font-family:'JetBrains Mono',monospace;background:rgba(0,217,255,.12);padding:1px 6px;border-radius:5px;color:var(--cy);font-size:.9em}
+button{font-family:'JetBrains Mono',monospace;background:transparent;color:var(--cy);border:1px solid var(--cy);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{background:rgba(0,217,255,.15)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+td,th{border:1px solid var(--line);padding:8px;text-align:left}
+th{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:.8rem}
+input[type=number],input[type=text]{background:#060919;color:var(--tx);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-family:'JetBrains Mono',monospace}
+input[type=number]{width:80px}
+input.ok{border-color:var(--gr)}input.bad{border-color:var(--rd)}
+.ident{display:flex;gap:10px;flex-wrap:wrap}
+.ident label{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--mut);display:flex;flex-direction:column;gap:4px;flex:1;min-width:180px}
+.ident input{width:100%}
+.check{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.check .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.fb{font-family:'JetBrains Mono',monospace;margin-top:8px;font-size:.9rem}
+details{margin:10px 0}summary{cursor:pointer;color:var(--am);font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.done{display:flex;align-items:center;gap:8px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--gr)}
+.eq{font-family:'JetBrains Mono',monospace;color:var(--am);text-align:center;font-size:1.05rem;margin:10px 0}
+ul,ol{padding-left:20px}
+#prog{font-family:'JetBrains Mono',monospace;color:var(--gr)}
+footer{text-align:center;color:var(--mut);font-size:.8rem;margin-top:40px}
+@media print{
+  body{background:#fff;color:#000}#bar,button,details,.check{display:none}
+  .card{background:#fff;border:1px solid #999;break-inside:avoid}
+  h1,h2,th{color:#000}code{color:#000;background:#eee}
+  .box{border:1px solid #999;background:#fff}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="wrap">
+
+<header>
+  <span class="tag">Algoritmos y Programación · 4° 1° · TAREA</span>
+  <h1>🕸️ Desafíos de Grafos</h1>
+  <p>Seis desafíos para practicar el <b>grado de un vértice</b>. Resolvelos <b>en tu carpeta, con dibujos</b> (puntos y líneas) y prolijidad. Cada ejercicio tiene un casillero para que verifiques tu resultado final, pero <b>lo que se evalúa es el dibujo</b>: sin dibujo no vale.</p>
+  <div class="card ident">
+    <label>Nombre y apellido<input type="text" id="nom" placeholder="Tu nombre"></label>
+    <label>Fecha de entrega<input type="text" id="fec" placeholder="dd/mm"></label>
+  </div>
+  <div id="prog">Progreso: 0 de 6 ejercicios</div>
+</header>
+
+<div class="card">
+  <h2>🧠 Recordatorio exprés</h2>
+  <ul>
+    <li><b>Grado d(v)</b> = cantidad de aristas (líneas) que tocan al vértice v.</li>
+    <li><b>Regla de los apretones de mano:</b></li>
+  </ul>
+  <div class="eq">suma de todos los grados = 2 × cantidad de aristas</div>
+  <div class="idea box"><b class="t">💡 ESTRATEGIA</b>Empezá siempre por el nodo de <b>mayor grado</b>. Dibujá sus conexiones, restale 1 a cada vecino y repetí con el siguiente. Y antes de dibujar, sumá los grados: si da impar, hay un error.</div>
+  <div class="warn box"><b class="t">⚠️ REGLAS PARA TODOS LOS EJERCICIOS</b>Una sola línea entre dos nodos (sin repetir) y ningún nodo conectado consigo mismo.</div>
+</div>
+
+<!-- EJ 1 -->
+<section class="card ex" id="e1">
+  <div class="meta"><span>⭐ NIVEL 1</span><span>EJERCICIO 1 · ⚽ El torneo calafateño</span></div>
+  <p>En el torneo juegan 5 equipos: <b>Lago Argentino, Deportivo Esperanza, Gendarme Amarilla, Cañadón y Newells</b>. En la última fecha, cada equipo anotó cuántos partidos jugó:</p>
+  <table><tr><th>Equipo</th><th>Partidos jugados</th></tr>
+    <tr><td>Lago Argentino</td><td>4</td></tr><tr><td>Deportivo Esperanza</td><td>3</td></tr>
+    <tr><td>Gendarme Amarilla</td><td>3</td></tr><tr><td>Cañadón</td><td>2</td></tr><tr><td>Newells</td><td>2</td></tr></table>
+  <p>Nadie jugó contra sí mismo ni dos veces contra el mismo rival.</p>
+  <p><b>Consigna:</b> dibujá quién jugó contra quién. ¿Cuántos partidos se jugaron en total? ¿Qué equipo jugó contra todos los demás?</p>
+  <div class="check"><div class="row">Partidos en total: <input type="number" data-a="7"></div>
+    <button onclick="chk('e1')">Verificar</button><div class="fb"></div></div>
+  <label class="done"><input type="checkbox" class="dn"> Lo resolví y dibujé en mi carpeta</label>
+</section>
+
+<!-- EJ 2 -->
+<section class="card ex" id="e2">
+  <div class="meta"><span>⭐ NIVEL 1</span><span>EJERCICIO 2 · 💬 Los chats privados</span></div>
+  <p>En un grupo de WhatsApp hay 6 amigos. Cada uno cuenta con cuántos de los otros tiene un chat privado:</p>
+  <table><tr><th>Persona</th><th>Chats privados</th></tr>
+    <tr><td>Lu</td><td>3</td></tr><tr><td>Mati</td><td>3</td></tr><tr><td>Nico</td><td>3</td></tr>
+    <tr><td>Pau</td><td>2</td></tr><tr><td>Rochi</td><td>2</td></tr><tr><td>Santi</td><td>1</td></tr></table>
+  <p><b>Consigna:</b> armá el mapa de chats. ¿Cuántos chats privados existen en total? ¿Quién es el más aislado?</p>
+  <div class="check"><div class="row">Chats en total: <input type="number" data-a="7"></div>
+    <button onclick="chk('e2')">Verificar</button><div class="fb"></div></div>
+  <label class="done"><input type="checkbox" class="dn"> Lo resolví y dibujé en mi carpeta</label>
+</section>
+
+<!-- EJ 3 -->
+<section class="card ex" id="e3">
+  <div class="meta"><span>⭐⭐ NIVEL 2</span><span>EJERCICIO 3 · 🗺️ El mapa del pueblo inventado</span></div>
+  <p>En un pueblo imaginario hay 5 lugares. Un cartel indica cuántos caminos directos salen de cada uno:</p>
+  <table><tr><th>Lugar</th><th>Caminos</th></tr>
+    <tr><td>Centro</td><td>3</td></tr><tr><td>Terminal</td><td>2</td></tr><tr><td>Aeropuerto</td><td>2</td></tr>
+    <tr><td>Costanera</td><td>2</td></tr><tr><td>Mirador</td><td>1</td></tr></table>
+  <p><b>Consigna:</b> dibujá el mapa. ¿Cuántos caminos hay? Después, un turista llega al Aeropuerto y quiere ir al Mirador: ¿por dónde pasa y cuántos tramos recorre en el camino más corto?</p>
+  <div class="check">
+    <div class="row">Caminos en total: <input type="number" data-a="5"></div>
+    <div class="row">Tramos del camino más corto: <input type="number" data-a="3"></div>
+    <button onclick="chk('e3')">Verificar</button><div class="fb"></div></div>
+  <label class="done"><input type="checkbox" class="dn"> Lo resolví y dibujé en mi carpeta</label>
+</section>
+
+<!-- EJ 4 -->
+<section class="card ex" id="e4">
+  <div class="meta"><span>⭐⭐ NIVEL 2</span><span>EJERCICIO 4 · 🎮 El calabozo del videojuego</span></div>
+  <p>Un nivel tiene 7 salas conectadas por pasillos. El mapa dice cuántos pasillos tiene cada sala:</p>
+  <table><tr><th>Sala</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th></tr>
+    <tr><td>Pasillos</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td></tr></table>
+  <p>F y G son callejones sin salida: en F está el jefe y en G el tesoro.</p>
+  <p><b>Consigna:</b> dibujá el calabozo. ¿Cuántos pasillos hay? ¿Cuántos pasillos tiene el camino más corto del jefe (F) al tesoro (G)? Escribí el recorrido.</p>
+  <div class="check">
+    <div class="row">Pasillos en total: <input type="number" data-a="7"></div>
+    <div class="row">Pasillos del camino más corto F → G: <input type="number" data-a="5"></div>
+    <button onclick="chk('e4')">Verificar</button><div class="fb"></div></div>
+  <label class="done"><input type="checkbox" class="dn"> Lo resolví y dibujé en mi carpeta</label>
+</section>
+
+<!-- EJ 5 -->
+<section class="card ex" id="e5">
+  <div class="meta"><span>⭐⭐⭐ NIVEL 3</span><span>EJERCICIO 5 · 🕵️ El técnico que anotó mal</span></div>
+  <p>Un técnico relevó una red de 6 equipos y anotó estos grados: <b>4, 4, 3, 2, 2, 2</b>. Su jefe dice que hay un error en un solo número.</p>
+  <p><b>Consigna:</b></p>
+  <ol>
+    <li>Sin dibujar nada, explicá cómo sabés que el técnico se equivocó.</li>
+    <li>Corregí <b>un</b> número (subiéndolo o bajándolo en 1) y dibujá la red que queda.</li>
+    <li>Escribí cuántos cables tiene tu red corregida.</li>
+  </ol>
+  <details><summary>🔓 Pista</summary><p>Sumá los grados originales. ¿Puede ese número ser el doble de la cantidad de aristas?</p></details>
+  <div class="check">
+    <div class="row">Suma de los grados originales: <input type="number" data-a="17"></div>
+    <button onclick="chk('e5')">Verificar</button><div class="fb"></div></div>
+  <div class="warn box"><b class="t">⚠️ OJO</b>Hay más de una corrección posible. Lo importante es que tu dibujo cumpla los grados que elegiste.</div>
+  <label class="done"><input type="checkbox" class="dn"> Lo resolví y dibujé en mi carpeta</label>
+</section>
+
+<!-- EJ 6 -->
+<section class="card ex" id="e6">
+  <div class="meta"><span>⭐⭐⭐ NIVEL JEFE FINAL</span><span>EJERCICIO 6 · 🏆 Las figuritas del Mundial</span></div>
+  <p>7 chicos intercambian figuritas. Cada uno cuenta con cuántos compañeros distintos intercambió:</p>
+  <table><tr><th>Chico</th><th>Tomi</th><th>Uma</th><th>Vero</th><th>Walter</th><th>Xime</th><th>Yami</th><th>Zoe</th></tr>
+    <tr><td>Intercambios</td><td>6</td><td>5</td><td>4</td><td>3</td><td>3</td><td>2</td><td>1</td></tr></table>
+  <p><b>Consigna:</b> reconstruí quién intercambió con quién y calculá el total de intercambios.</p>
+  <details><summary>🔓 Pista</summary><p>Si Tomi intercambió con 6 y hay solo 6 compañeros, ¿con quiénes fue? Después tachá a Tomi, restale 1 al grado de cada uno y repetí con el que quedó con más.</p></details>
+  <div class="check"><div class="row">Intercambios en total: <input type="number" data-a="12"></div>
+    <button onclick="chk('e6')">Verificar</button><div class="fb"></div></div>
+  <label class="done"><input type="checkbox" class="dn"> Lo resolví y dibujé en mi carpeta</label>
+</section>
+
+<section class="card">
+  <h2>🎁 Bonus (opcional, suma puntos)</h2>
+  <p>Una <b>malla completa</b> es una red donde todos los nodos están conectados con todos. Completá cuántos cables necesita:</p>
+  <table><tr><th>PLCs</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>10</th></tr>
+    <tr><td>Cables</td><td>1</td><td>3</td><td>…</td><td>…</td><td>…</td><td>…</td></tr></table>
+  <p>¿Qué patrón encontrás? Intentá escribir una fórmula para <b>n</b> PLCs usando la regla de los apretones de mano.</p>
+  <details><summary>🔓 Pista</summary><p>En una malla completa de n nodos, ¿cuánto vale el grado de cada nodo? Armá la suma de grados y dividila por 2.</p></details>
+</section>
+
+<section class="card">
+  <h2>📦 Antes de entregar</h2>
+  <ul>
+    <li>Cada ejercicio tiene su dibujo con los nodos rotulados.</li>
+    <li>Verificaste que el grado de cada nodo en tu dibujo coincide con el de la consigna.</li>
+    <li>Escribiste tu nombre y la fecha arriba.</li>
+  </ul>
+  <p>🏆 ¡Éxitos! Cualquier duda, la traés a clase y la resolvemos en el pizarrón.</p>
+  <button onclick="window.print()">🖨️ Imprimir tarea</button>
+</section>
+
+<footer>Prof. Pablo Limardo – Jefatura ACPI · Escuela Industrial N° 9 "15 de Noviembre" · El Calafate</footer>
+</div>
+
+<script>
+function chk(id){
+  const s=document.getElementById(id),ins=[...s.querySelectorAll("input[data-a]")],fb=s.querySelector(".fb");
+  let ok=0,vac=0;
+  ins.forEach(i=>{if(i.value===""){vac++;i.className="";return;}const c=+i.value===+i.dataset.a;i.className=c?"ok":"bad";if(c)ok++;});
+  if(vac){fb.textContent="Completá todos los casilleros primero 😉";fb.style.color="var(--am)";}
+  else if(ok===ins.length){fb.textContent="✅ ¡Coincide! Ahora asegurate de tener el dibujo en tu carpeta.";fb.style.color="var(--gr)";}
+  else{fb.textContent="Todavía no coincide. Revisá tu dibujo: sumá los grados y aplicá la regla de los apretones de mano.";fb.style.color="var(--rd)";}
+}
+const dns=[...document.querySelectorAll(".dn")],prog=document.getElementById("prog");
+function upd(){prog.textContent="Progreso: "+dns.filter(d=>d.checked).length+" de "+dns.length+" ejercicios";}
+dns.forEach((d,i)=>{try{d.checked=localStorage.getItem("g4_dn"+i)==="1";}catch(e){}
+  d.addEventListener("change",()=>{try{localStorage.setItem("g4_dn"+i,d.checked?"1":"0");}catch(e){}upd();});});
+["nom","fec"].forEach(k=>{const el=document.getElementById(k);try{el.value=localStorage.getItem("g4_"+k)||"";}catch(e){}
+  el.addEventListener("input",()=>{try{localStorage.setItem("g4_"+k,el.value);}catch(e){}});});
+upd();
+addEventListener("scroll",()=>{const h=document.documentElement;document.getElementById("bar").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";});
+</script>
+</body>
+</html>
